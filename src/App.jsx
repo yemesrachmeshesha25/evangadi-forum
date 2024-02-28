@@ -6,33 +6,33 @@ import { useEffect, useState, createContext} from 'react'
 import axios from "./axiosConfig";
 
 export const AppState = createContext();
-function App() {
 
+function App() {
   const [user, setuser] = useState({});
 
-  const token = localStorage.getItem('token')
-  const navigate = useNavigate()
-  async function checkUser(){
+  const token = localStorage.getItem('token');
+  const navigate = useNavigate();
+  async function checkUser() {
     try {
     const { data } = await axios.get("/users/check",{
       headers: {
-        Authorization: 'Bearer' + token,
+        Authorization: 'Bearer ' + token,
       },
     });
 
     setuser(data);
     } catch (error) {
       console.log(error.response);
-      navigate('/login')
+      navigate('/login');
     }
   }
 
-  // useEffect(() => {
-  //   checkUser();
-  // }, []);
+  useEffect(() => {
+    checkUser();
+  }, []);
 
   return (
-    <AppState.Provider value={{user, setuser}}>
+    <AppState.Provider value={{ user, setuser }}>
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
