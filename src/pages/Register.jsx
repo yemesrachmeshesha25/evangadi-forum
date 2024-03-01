@@ -1,7 +1,7 @@
 import {useRef} from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import axios from '../axiosConfig'
-
+import classes from "./register.module.css"
 function Register() {
  const navigate = useNavigate()
 const usernameDom = useRef();
@@ -45,7 +45,7 @@ navigate("/login")
 }
   }
   return (
-    <section>
+    <section className={classes.upper_wrapper}>
       <form onSubmit={handleSubmit}>
         <div>
           <span>username :--- </span>
