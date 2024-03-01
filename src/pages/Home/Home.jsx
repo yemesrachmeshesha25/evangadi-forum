@@ -37,7 +37,7 @@ function Home() {
             />
           </div>
           <div className={classes.username_wrapper}>
-            <h2> Welcome: <span>{firstName}</span></h2>
+          <h2>wellcome : {user.username}</h2>
           </div>
         </div>
 

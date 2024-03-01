@@ -1,13 +1,11 @@
 import {Route, Routes, useNavigate} from "react-router-dom"
 import "./App.css";
+import SignInPage from "./Components/SignInPage/SignInPage"
 import SignUpPage from "./Components/SignUpPage/SignUpPage";
 import AskQuestions from "./Components/AskQuestions/AskQuestions";
 import Home from "./pages/Home/Home";
-import Login from "./pages/Login/Login";
-import Register from "./pages/Register/Register";
 import { useEffect, useState, createContext} from 'react'
 import axios from "./API/axiosConfig";
-import Footer from "./pages/Footer/Footer";
 
 export const AppState = createContext();
 
@@ -16,15 +14,16 @@ function App() {
 
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
+
   async function checkUser() {
     try {
-    const { data } = await axios.get("/users/check",{
+    const response= await axios.get("/users/check",{
       headers: {
         Authorization: 'Bearer ' + token,
       },
     });
-
-    setUser(data);
+    const userData = response.data;
+    setUser(userData);
     } catch (error) {
       console.log(error.response);
       navigate('/login');
@@ -41,7 +40,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<SignUpPage />} />
-        <Route path='/register' element={<Register />} />
+        <Route path='/register' element={<SignInPage />} />
         <Route path='/ask-questions' element={<AskQuestions />} />
       </Routes>
     

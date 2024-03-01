@@ -33,7 +33,7 @@ function Header() {
                         <Link to="/signin"><button>SIGN IN</button></Link>
                     </div>
                 </div>
-                <div className={classes.header_manubar}>
+                <div className={classes.header_menubar}>
                     <div className={classes.header_middle_wrapper}>
                         <ul>
                             <li><Link to="/"><span>Home</span></Link></li>
