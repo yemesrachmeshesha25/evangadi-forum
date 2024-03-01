@@ -1,11 +1,11 @@
 import {Route, Routes, useNavigate} from "react-router-dom"
 import "./App.css";
 import SignUpPage from "./Components/SignUpPage/SignUpPage";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import Home from "./pages/Home/Home";
+import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
 import { useEffect, useState, createContext} from 'react'
-import axios from "./axiosConfig";
+import axios from "./API/axiosConfig";
 import Footer from "./pages/Footer/Footer";
 
 export const AppState = createContext();

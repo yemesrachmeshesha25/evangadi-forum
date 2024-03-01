@@ -2,7 +2,7 @@ import React from 'react'
 import classes from './SignUpPage.module.css'
 import { Link } from 'react-router-dom'
 import Header from '../../pages/Header/Header'
-import Login from '../../pages/Login'
+import Login from '../../pages/Login/Login'
 import Footer from '../../pages/Footer/Footer'
 
 
