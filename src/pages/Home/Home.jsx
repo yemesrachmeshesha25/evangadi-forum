@@ -1,5 +1,9 @@
-import { useContext, useEffect, } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { AppState } from '../../App';
+import classes from './Home.module.css'
+import { Link } from "react-router-dom"
+import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 
 function Home() {
   const { user } = useContext(AppState);

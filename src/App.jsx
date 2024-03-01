@@ -1,6 +1,7 @@
 import {Route, Routes, useNavigate} from "react-router-dom"
 import "./App.css";
 import SignUpPage from "./Components/SignUpPage/SignUpPage";
+import AskQuestions from "./Components/AskQuestions/AskQuestions";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
@@ -36,11 +37,12 @@ function App() {
 
   return (
     <AppState.Provider value={{ user, setUser }}>
-     
+    
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<SignUpPage />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/ask-questions' element={<AskQuestions />} />
       </Routes>
     
     </AppState.Provider>
