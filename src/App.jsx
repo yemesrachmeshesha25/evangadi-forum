@@ -10,29 +10,41 @@ import axios from "./API/axiosConfig";
 export const AppState = createContext();
 
 function App() {
+ 
   const [user, setUser] = useState({});
-
+ 
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
 
-  async function checkUser() {
+  async function fetchData() {
     try {
-    const response= await axios.get("/users/check",{
-      headers: {
-        Authorization: 'Bearer ' + token,
-      },
-    });
-    const userData = response.data;
-    setUser(userData);
+      const [userData] = await Promise.all([
+        axios.get('/users/check', {
+          headers: {
+            Authorization: 'Bearer ' + token,
+          },
+        }),
+        axios.get('/questions', {
+          headers: {
+            Authorization: 'Bearer ' + token,
+          },
+        }),
+      ]);
+
+      setUser(userData.data);
+     console.log(userData,"test")
     } catch (error) {
-      console.log(error.response);
+      console.error(error.response);
       navigate('/login');
     }
   }
 
   useEffect(() => {
-    checkUser();
+    fetchData();
   }, []);
+
+  console.log(user, 'user123');
+  
 
   return (
     <AppState.Provider value={{ user, setUser }}>
