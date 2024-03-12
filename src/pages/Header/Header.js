@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import ClearIcon from '@mui/icons-material/Clear';
-import logo from '../../Components/SignUpPage/img/logo.png'
+import logo from '../../assets/logo.png'
 
 function Header() {
     const [menuOpen, setMenuOpen] = useState(false);

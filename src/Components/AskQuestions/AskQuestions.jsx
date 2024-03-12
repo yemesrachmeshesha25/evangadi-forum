@@ -1,124 +1,270 @@
-import React, { useContext,useState,useRef,useEffect } from 'react';
-import classes from './AskQuestions.module.css';
-import { Link, useNavigate } from 'react-router-dom';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import Footer from '../../pages/Footer/Footer';
+import React, { useEffect, useState, useRef, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import "../../index.css";
 import Header from '../../pages/Header/Header';
 import axios from '../../API/axiosConfig'
-import LightbulbIcon from '@mui/icons-material/Lightbulb';
-import {AppState} from "../../App"
+import { v4 as uuidv4 } from "uuid";
+import { AppState } from "../../App";
 
-
-function AskQuestions() {
-  const { setQuestions } = useContext(AppState);
-  const questionDom = useRef(null);
-  const questiondescriptionDom = useRef(null);
-  const [editorContent, setEditorContent] = useState('');
+const AskQuestion = () => {
   const navigate = useNavigate();
+  const { user } = useContext(AppState);
+  const token = localStorage.getItem("token");
 
-  useEffect(() => {
-    fetchQuestions();
-  }, []);
+  const titleDom = useRef(null);
+  const descriptionDom = useRef(null);
+  const tagDom = useRef(null);
 
-  async function fetchQuestions() {
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const titleValue = titleDom.current.value;
+    const descriptionValue = descriptionDom.current.value;
+    const tagValue = tagDom.current.value;
+    const questionid = uuidv4();
+    const userid = user.userid;
+    console.log(userid);
+
+    if (
+      !questionid ||
+      !userid ||
+      !titleValue ||
+      !descriptionValue ||
+      !tagValue
+    ) {
+      alert("please provide all required fields");
+      return;
+    }
+
     try {
-      const response = await axios.get('/questions/all-questions');
-      setQuestions(response.data.questions);
-      console.log("Questions:", response.data.questions);
+      const response = await axios.post(
+        "/question/postquestions",
+        {
+          questionid: questionid,
+          userid: userid,
+          title: titleValue,
+          description: descriptionValue,
+          tag: tagValue,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      titleDom.current.value = "";
+      descriptionDom.current.value = "";
+      tagDom.current.value = "";
+      console.log(response, "response");
+      setTimeout(() => {
+        navigate("/");
+        window.location.reload();
+      }, 2000);
     } catch (error) {
-      console.error("Error fetching questions:", error);
+      alert("something went wrong");
+      console.log(error.response);
     }
   }
-
-  async function postQuestionSubmit(e) {
-    e.preventDefault();
-
-    
-    if (!questionDom.current) {
-        console.error('Question input ref is not initialized.');
-        return;
-    }
-
-    const questionValue = questionDom.current.value;
-
-    if (!questionValue) {
-        alert("Please provide your question");
-        return;
-    }
-
-    try {
-        const token = localStorage.getItem("token");
-        const response = await axios.post(
-            'questions/add-questions', 
-            {
-                question: questionValue,
-                questiondescription: editorContent, 
-            },
-            {
-                headers: {
-                    Authorization: "Bearer " + token,
-                },
-            }
-        );
-
-        console.log(response.config);
-        console.log("Response", response);
-
-        const responseData = response.config.data;
-
-        if (responseData) {
-            alert("Question posted successfully.");
-
-            navigate('/');
-        } else {
-            console.error("Response data is undefined", response);
-            alert("Failed to post question. Please try again later.");
-        }
-    } catch (error) {
-        console.error("Error:", error);
-        alert("Failed to post question. Please try again later.");
-    }
-}
-
   return (
     <section>
-      <div>
-        <Header />
-      </div>
-      <hr className={classes.hr} />
-      
-      <div className={classes.question_description}>
-        <h2> <span><LightbulbIcon /></span>Steps to write a good question <span><LightbulbIcon /></span></h2>
-        <div className={classes.dotted_lines}>
-          <li>Summarize your problem in a one-line title.</li>
-          <li>Describe your problem in more detail.</li>
-          <li>Describe what you tried and what you expected to happen.</li>
-          <li>Review your question and post it to the site.</li>
+      <Header />
+      <div className="container d-flex flex-column align-items-center mt-4 ">
+        {/* steps and how to write Q  */}
+        <div className="justify-content-around ">
+          {/*  how to write Q  Title*/}
+          <h2>Steps to Write a good questions </h2>
         </div>
-      </div>
-      <div className={classes.publicQuestion_wrapper}>
-        <h2>Ask a public question</h2>
-        <p>Go to Question Page</p>
-        <input type="text" 
-                placeholder='Question Title'
-        />
 
-        <div className={classes.reactQuill_wrapper}>
-            <ReactQuill 
-              value={editorContent} 
-              onChange={setEditorContent} 
-              placeholder="Question Description..."
-              
-            />
+        <div>
+          {/*step to write Q  */}
+          <ul>
+            <li> Summarise you problem in one-line title</li>
+            <li> Describe your problem in more detail</li>
+            <li>Describe what you tried and What you expected to happen </li>
+            <li>Review your question and post it to the site </li>
+          </ul>
         </div>
-          <Link to="/">
-          <button className={classes.publicQuestion_button_wrapper}>Post Your Question</button>
-          </Link>
       </div>
-      <Footer />
+
+      <div className="d-flex flex-column align-items-center container  shadow-sm p-3 mb-5 bg-body rounded">
+        <div className="mt-5 pt-4">
+          {/* Ask Q Part */}
+          <div>
+            <h3>Ask a Public question </h3>
+          </div>
+          <div className="align-items-center">
+            <p>Go to Question page</p>
+          </div>
+        </div>
+
+        <div className="container">
+          {/* form part */}
+          <form action="" onSubmit={handleSubmit}>
+            <div className="mb-2">
+              <input
+                type="text"
+                placeholder="Title"
+                className="form-control "
+                ref={titleDom}
+              />
+            </div>
+            <div cla>
+              <textarea
+                class="form-control p-4"
+                id="exampleFormControlTextarea1"
+                rows="3"
+                placeholder="Question Description "
+                ref={descriptionDom}
+              ></textarea>
+            </div>
+            <div>
+              <input
+                type="text"
+                placeholder="tag"
+                className="form-control mt-2 "
+                ref={tagDom}
+              />
+            </div>
+            <div className=" mt-2">
+              <button
+                className="btn btn-primary fw-bold px-5 action_btn"
+                type="Submit"
+              >
+                Post your Question
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </section>
   );
-}
+};
 
-export default AskQuestions;
+export default AskQuestion;
+
+
+
+
+// import React, { useContext,useState,useRef,useEffect } from 'react';
+// import classes from './AskQuestions.module.css';
+// import { Link, useNavigate } from 'react-router-dom';
+// import ReactQuill from 'react-quill';
+// import 'react-quill/dist/quill.snow.css';
+// import Footer from '../../pages/Footer/Footer';
+// import Header from '../../pages/Header/Header';
+// import axios from '../../API/axiosConfig'
+// import LightbulbIcon from '@mui/icons-material/Lightbulb';
+// import {AppState} from "../../App"
+
+
+// function AskQuestions() {
+//   const { setQuestions } = useContext(AppState);
+//   const questionDom = useRef(null);
+//   const questiondescriptionDom = useRef(null);
+//   const [editorContent, setEditorContent] = useState('');
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     fetchQuestions();
+//   }, []);
+
+//   async function fetchQuestions() {
+//     try {
+//       const response = await axios.get('/questions/all-questions');
+//       setQuestions(response.data.questions);
+//       console.log("Questions:", response.data.questions);
+//     } catch (error) {
+//       console.error("Error fetching questions:", error);
+//     }
+//   }
+
+//   async function postQuestionSubmit(e) {
+//     e.preventDefault();
+
+    
+//     if (!questionDom.current) {
+//         console.error('Question input ref is not initialized.');
+//         return;
+//     }
+
+//     const questionValue = questionDom.current.value;
+
+//     if (!questionValue) {
+//         alert("Please provide your question");
+//         return;
+//     }
+
+//     try {
+//         const token = localStorage.getItem("token");
+//         const response = await axios.post(
+//             'questions/add-questions', 
+//             {
+//                 question: questionValue,
+//                 questiondescription: editorContent, 
+//             },
+//             {
+//                 headers: {
+//                     Authorization: "Bearer " + token,
+//                 },
+//             }
+//         );
+
+//         console.log(response.config);
+//         console.log("Response", response);
+
+//         const responseData = response.config.data;
+
+//         if (responseData) {
+//             alert("Question posted successfully.");
+
+//             navigate('/');
+//         } else {
+//             console.error("Response data is undefined", response);
+//             alert("Failed to post question. Please try again later.");
+//         }
+//     } catch (error) {
+//         console.error("Error:", error);
+//         alert("Failed to post question. Please try again later.");
+//     }
+// }
+
+//   return (
+//     <section>
+//       <div>
+//         <Header />
+//       </div>
+//       <hr className={classes.hr} />
+      
+//       <div className={classes.question_description}>
+//         <h2> <span><LightbulbIcon /></span>Steps to write a good question <span><LightbulbIcon /></span></h2>
+//         <div className={classes.dotted_lines}>
+//           <li>Summarize your problem in a one-line title.</li>
+//           <li>Describe your problem in more detail.</li>
+//           <li>Describe what you tried and what you expected to happen.</li>
+//           <li>Review your question and post it to the site.</li>
+//         </div>
+//       </div>
+//       <div className={classes.publicQuestion_wrapper}>
+//         <h2>Ask a public question</h2>
+//         <p>Go to Question Page</p>
+//         <input type="text" 
+//                 placeholder='Question Title'
+//         />
+
+//         <div className={classes.reactQuill_wrapper}>
+//             <ReactQuill 
+//               value={editorContent} 
+//               onChange={setEditorContent} 
+//               placeholder="Question Description..."
+              
+//             />
+//         </div>
+//           <Link to="/">
+//           <button className={classes.publicQuestion_button_wrapper}>Post Your Question</button>
+//           </Link>
+//       </div>
+//       <Footer />
+//     </section>
+//   );
+// }
+
+// export default AskQuestions;

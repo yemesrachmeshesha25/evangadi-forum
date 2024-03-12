@@ -1,7 +1,7 @@
 import React from 'react'
 import classes from './Footer.module.css'
 import { Link } from 'react-router-dom';
-import footer_logo from '../../Components/SignUpPage/img/logo-footer.png'
+import footer_logo from '../../assets/logo-footer.png'
 // icons
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';

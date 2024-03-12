@@ -1,63 +1,130 @@
-import {Route, Routes, useNavigate} from "react-router-dom"
-import "./App.css";
-import SignInPage from "./Components/SignInPage/SignInPage"
-import SignUpPage from "./Components/SignUpPage/SignUpPage";
-import AskQuestions from "./Components/AskQuestions/AskQuestions";
-import Home from "./pages/Home/Home";
-import { useEffect, useState, createContext} from 'react'
+import { Route, Routes, useNavigate } from "react-router-dom";
+import { useEffect, useState, createContext } from "react";
 import axios from "./API/axiosConfig";
+import LandingLayout from "./pages/LandingLayout/LandingLayout";
+import Home from "./pages/Home/Home";
+import Question from "./Components/AskQuestions/AskQuestions";
+import Answer from "./Components/Answer/Answer";
 
 export const AppState = createContext();
 
 function App() {
- 
-  const [user, setUser] = useState({});
- 
-  const token = localStorage.getItem('token');
+  const [user, setuser] = useState({});
+  const  [question ,setQuestion] = useState({})
+
+  const token = localStorage.getItem("token");
   const navigate = useNavigate();
-
-  async function fetchData() {
+  async function checkUser() {
     try {
-      const [userData] = await Promise.all([
-        axios.get('/users/check', {
-          headers: {
-            Authorization: 'Bearer ' + token,
-          },
-        }),
-        axios.get('/questions', {
-          headers: {
-            Authorization: 'Bearer ' + token,
-          },
-        }),
-      ]);
-
-      setUser(userData.data);
-     console.log(userData,"test")
+      const { data } = await axios.get("/users/check", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setuser(data);
+      console.log(data)
     } catch (error) {
-      console.error(error.response);
-      navigate('/login');
+      navigate("/Login");
+      console.log(error.response);
     }
   }
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  async function getQuestion() {
 
-  console.log(user, 'user123');
-  
+    try {
+      const { data } = await axios.get('/question/getquestions', {
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      });
+      // console.log(data)
+      setQuestion(data); 
+    } catch (error) {
+      
+      console.error('Error fetching question:', error);
+  }
+  }
+useEffect(() => {
+  checkUser();
+  getQuestion();
+}, []);
 
   return (
-    <AppState.Provider value={{ user, setUser }}>
-    
+    <AppState.Provider value={{ user, setuser , question, setQuestion}}>
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/login' element={<SignUpPage />} />
-        <Route path='/register' element={<SignInPage />} />
-        <Route path='/ask-questions' element={<AskQuestions />} />
+        <Route path="/Login" element={<LandingLayout />} />
+        <Route path="/" element={<Home />} />
+        <Route  path="/questions" element={<Question/>}/>
+        <Route path="/answer"  element={<Answer/>}/>
       </Routes>
-    
     </AppState.Provider>
   );
 }
 
 export default App;
+
+
+
+
+
+// import {Route, Routes, useNavigate} from "react-router-dom"
+// import "./App.css";
+// import SignInPage from "./Components/SignInPage/SignInPage"
+// import SignUpPage from "./Components/SignUpPage/SignUpPage";
+// import AskQuestions from "./Components/AskQuestions/AskQuestions";
+// import Home from "./pages/Home/Home";
+// import { useEffect, useState, createContext} from 'react'
+// import axios from "./API/axiosConfig";
+
+// export const AppState = createContext();
+
+// function App() {
+ 
+//   const [user, setUser] = useState({});
+ 
+//   const token = localStorage.getItem('token');
+//   const navigate = useNavigate();
+
+//   async function fetchData() {
+//     try {
+//       const [userData] = await Promise.all([
+//         axios.get('/users/check', {
+//           headers: {
+//             Authorization: 'Bearer ' + token,
+//           },
+//         }),
+//         axios.get('/questions', {
+//           headers: {
+//             Authorization: 'Bearer ' + token,
+//           },
+//         }),
+//       ]);
+
+//       setUser(userData.data);
+//      console.log(userData,"test")
+//     } catch (error) {
+//       console.error(error.response);
+//       navigate('/login');
+//     }
+//   }
+
+//   useEffect(() => {
+//     fetchData();
+//   }, []);
+
+//   console.log(user, 'user123');
+  
+
+//   return (
+//     <AppState.Provider value={{ user, setUser }}>
+    
+//       <Routes>
+//         <Route path='/' element={<Home />} />
+//         <Route path='/login' element={<SignUpPage />} />
+//         <Route path='/register' element={<SignInPage />} />
+//         <Route path='/ask-questions' element={<AskQuestions />} />
+//       </Routes>
+    
+//     </AppState.Provider>
+//   );
+// }
+
+// export default App;
