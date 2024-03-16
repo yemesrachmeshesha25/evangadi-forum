@@ -11,25 +11,25 @@ const AskQuestion = () => {
   const { user } = useContext(AppState);
   const token = localStorage.getItem("token");
 
-  const titleDom = useRef(null);
-  const descriptionDom = useRef(null);
-  const tagDom = useRef(null);
+  const questionDom = useRef(null);
+  const questiondescriptionDom = useRef(null);
+  const tagsDom = useRef(null);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const titleValue = titleDom.current.value;
-    const descriptionValue = descriptionDom.current.value;
-    const tagValue = tagDom.current.value;
-    const questionid = uuidv4();
-    const userid = user.userid;
+    const questionValue = questionDom.current.value;
+    const questiondescriptionValue = questiondescriptionDom.current.value;
+    const tagsValue = tagsDom.current.value;
+     const questionid = uuidv4();
+     const userid = user;
     console.log(userid);
 
     if (
-      !questionid ||
-      !userid ||
-      !titleValue ||
-      !descriptionValue ||
-      !tagValue
+       !questionid ||
+       !userid ||
+      !questionValue ||
+      !questiondescriptionValue|| 
+       !tagsValue
     ) {
       alert("please provide all required fields");
       return;
@@ -37,13 +37,11 @@ const AskQuestion = () => {
 
     try {
       const response = await axios.post(
-        "/question/postquestions",
+        "/questions/questions",
         {
-          questionid: questionid,
-          userid: userid,
-          title: titleValue,
-          description: descriptionValue,
-          tag: tagValue,
+          question: questionValue,
+          questiondescription: questiondescriptionValue,
+         
         },
         {
           headers: {
@@ -51,9 +49,9 @@ const AskQuestion = () => {
           },
         }
       );
-      titleDom.current.value = "";
-      descriptionDom.current.value = "";
-      tagDom.current.value = "";
+      questionDom.current.value = "";
+      questiondescriptionDom.current.value = "";
+       tagsDom.current.value = "";
       console.log(response, "response");
       setTimeout(() => {
         navigate("/");
@@ -63,21 +61,20 @@ const AskQuestion = () => {
       alert("something went wrong");
       console.log(error.response);
     }
-  }
+ }
+
   return (
     <section>
       <Header />
       <div className="container d-flex flex-column align-items-center mt-4 ">
-        {/* steps and how to write Q  */}
         <div className="justify-content-around ">
-          {/*  how to write Q  Title*/}
           <h2>Steps to Write a good questions </h2>
         </div>
 
         <div>
           {/*step to write Q  */}
           <ul>
-            <li> Summarise you problem in one-line title</li>
+            <li> Summarize you problem in one-line title</li>
             <li> Describe your problem in more detail</li>
             <li>Describe what you tried and What you expected to happen </li>
             <li>Review your question and post it to the site </li>
@@ -104,16 +101,16 @@ const AskQuestion = () => {
                 type="text"
                 placeholder="Title"
                 className="form-control "
-                ref={titleDom}
+                ref={questionDom}
               />
             </div>
-            <div cla>
+            <div>
               <textarea
-                class="form-control p-4"
+                className="form-control p-4"
                 id="exampleFormControlTextarea1"
                 rows="3"
-                placeholder="Question Description "
-                ref={descriptionDom}
+                placeholder="Question Description... "
+                ref={questiondescriptionDom}
               ></textarea>
             </div>
             <div>
@@ -121,7 +118,7 @@ const AskQuestion = () => {
                 type="text"
                 placeholder="tag"
                 className="form-control mt-2 "
-                ref={tagDom}
+                ref={tagsDom}
               />
             </div>
             <div className=" mt-2">
@@ -129,7 +126,7 @@ const AskQuestion = () => {
                 className="btn btn-primary fw-bold px-5 action_btn"
                 type="Submit"
               >
-                Post your Question
+                Post Your Question
               </button>
             </div>
           </form>
@@ -140,6 +137,8 @@ const AskQuestion = () => {
 };
 
 export default AskQuestion;
+
+
 
 
 

@@ -1,10 +1,7 @@
 import { useContext } from "react"
 import { AppState } from '../../App';
-// import classes from './Home.module.css'
 import AskQuestion from "../../Components/AskQuestions/AskQuestions"
-import Question from "../../Components/Question/Question";
 import Header from "../Header/Header";
-//  import Footer from "../Footer/Footer";
 import { useNavigate , Link } from "react-router-dom";
 import { PiUserCircleDuotone } from "react-icons/pi";
 import { FaAngleRight } from "react-icons/fa6";
@@ -16,12 +13,12 @@ const Home = () => {
   console.log(user);
 
   const navigate = useNavigate();
-  const handleAnswerClick = () => {
-    navigate("/answer"); // Navigates to the "/answer" route
-  };
+  // const handleAnswerClick = () => {
+  //   navigate("/answers"); // Navigates to the "/answer" route
+  // };
 
   const handleAskQuestionClick = () => {
-    navigate("/questions"); // Navigates to the "/questions" route
+    navigate("/questions"); 
   };
 
   return (
@@ -45,25 +42,27 @@ const Home = () => {
         <div className="container mt-5">
           <h2>Question</h2>
 
-          {question.allquestion &&
-            question.allquestion.map((item, index) => (
+          {question.questions &&
+            question.questions.map((item, index) => (
               <Link
               className="text-decoration-none text-black"
               key={index}
-              to={`/answer?title=${encodeURIComponent(item.title)}&description=${encodeURIComponent(item.description)}&questionid=${encodeURIComponent(item.questionid)}`}
+              to={`/answer?question=${encodeURIComponent(item.question)}&questiondescription=${encodeURIComponent(item.questiondescription)}&questionid=${encodeURIComponent(item.questionid)}`}
             >
               <hr />
               <div className="d-flex justify-content-between align-items-center ">
+              <div className="d-md-flex align-items-center gap-4">
                 <div className="d-flex flex-column align-items-center gap-3">
                   {/* user */}
-                  <div className="user-icon">
-                    <PiUserCircleDuotone />
+                  <div>
+                    <PiUserCircleDuotone size={90}/>
                   </div>
                   <div>{item.username}</div>
                 </div>
                 <div>
                   {/* question */}
-                  <p>{item.title}</p>
+                  <p>{item.question}</p>
+                </div>
                 </div>
                 <div>
                   {/* arrow */}
@@ -81,6 +80,9 @@ const Home = () => {
 };
 
 export default Home;
+
+
+
 
 // function Home() {
 //   const { user, questions } = useContext(AppState);

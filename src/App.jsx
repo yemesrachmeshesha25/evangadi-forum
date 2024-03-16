@@ -9,17 +9,20 @@ import Answer from "./Components/Answer/Answer";
 export const AppState = createContext();
 
 function App() {
-  const [user, setuser] = useState({});
+  const [user, setUser] = useState({});
   const  [question ,setQuestion] = useState({})
-
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+  console.log(user)
   async function checkUser() {
     try {
       const { data } = await axios.get("/users/check", {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
       });
-      setuser(data);
+      console.log(data)
+      setUser(data);
       console.log(data)
     } catch (error) {
       navigate("/Login");
@@ -30,12 +33,12 @@ function App() {
   async function getQuestion() {
 
     try {
-      const { data } = await axios.get('/question/getquestions', {
+      const { data } = await axios.get('questions/questions', {
         headers: {
           Authorization: 'Bearer ' + token,
         },
       });
-      // console.log(data)
+      console.log(data)
       setQuestion(data); 
     } catch (error) {
       
@@ -45,10 +48,10 @@ function App() {
 useEffect(() => {
   checkUser();
   getQuestion();
-}, []);
+}, [navigate]);
 
   return (
-    <AppState.Provider value={{ user, setuser , question, setQuestion}}>
+    <AppState.Provider value={{ user, setUser , question, setQuestion}}>
       <Routes>
         <Route path="/Login" element={<LandingLayout />} />
         <Route path="/" element={<Home />} />

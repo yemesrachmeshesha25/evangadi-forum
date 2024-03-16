@@ -4,22 +4,18 @@ import axios from "../../API/axiosConfig.js";
 import { AppState } from "../../App.jsx";
 import Header from "../../pages/Header/Header.js";
 import { PiUserCircleDuotone } from "react-icons/pi";
-import { FaAngleRight } from "react-icons/fa6";
 
 const Answer = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Parse the query string to extract the title and description
   const queryParams = new URLSearchParams(location.search);
-  const title = queryParams.get("title");
-  const description = queryParams.get("description");
+  const question = queryParams.get("question");
+  const questiondescription = queryParams.get("questiondescription");
 
   const questionid = queryParams.get("questionid");
 
   const { user } = useContext(AppState);
-
-  //  console.log(questionid,user.userid)
 
   const [data, setData] = useState({});
 
@@ -43,7 +39,6 @@ const Answer = () => {
         {
           userid: userid,
           questionid: questionid,
-
           answer: answerValue,
         },
         {
@@ -61,6 +56,7 @@ const Answer = () => {
       console.log(error.response);
     }
   }
+  console.log(token)
   async function getAnswer() {
     try {
       const response = await axios.get("/answers/all-answers", {
@@ -71,6 +67,7 @@ const Answer = () => {
       });
       
       setData(response.data);
+      console.log(response.data)
     } catch (error) {
       console.log(error.response);
     }
@@ -84,55 +81,42 @@ const Answer = () => {
       <Header />
       <div className="landing bg-body-tertiary  pt-3">
         <div className="container   pt-3">
-          {/* Question answer title and   answer */}
           <div className="">
-            {/* top part */}
             <span className="fw-semibold fs-2 ">Question</span> <br />
-            {/* <span className="fw-semibold fs-5">What is react-router-dom</span> */}
-            <span className="fw-semibold fs-5">{title}</span>
+            <span className="fw-semibold fs-5">{question}</span>
             <span>
-              <p>{description} </p>
-              {/* <p>how does it work </p> */}
+              <p>{questiondescription} </p>
             </span>
           </div>
 
           <div>
             <hr />
-            <span className="fw-semibold fs-3">Answer from the Community</span>
-            {/* <hr /> */}
+            <span className="fw-semibold fs-3">Answer From The Community</span>
+      
           </div>
-
           <div>
             {data.allanswer &&
               data.allanswer.map((item, index) => (
-                <a
-                  href="#"
+                <div
                   key={index}
                   className="text-decoration-none text-black"
                 >
                   <hr />
-                  {/* user and arow container */}
                   <div className="d-flex justify-content-between">
                     <div className="d-md-flex align-items-center">
-                      {/* user and question  */}
                       <div className="user">
                         {/* user */}
                         <div>
                           <PiUserCircleDuotone />
                         </div>
-                        {/* <div>Fitsum </div> */}
-                        <div>{item.username}</div>
+                        <div>{user.username}</div>
                       </div>
                       <div>
                         <p>{item.answer}</p>
                       </div>
                     </div>
-
-                    {/* arow */}
-                    {/* <div className="align-items-center">
-                </div> */}
                   </div>
-                </a>
+                </div>
               ))}
           </div>
         </div>
@@ -141,7 +125,7 @@ const Answer = () => {
           <div className="mt-5 pt-4">
             {/* Ask Q Part */}
             <div>
-              <h3>Answer the Top Question </h3>
+              <h3>Answer The Top Question </h3>
             </div>
             <div className="align-items-center mt-2">
               <p>Go to Question page</p>
@@ -153,7 +137,7 @@ const Answer = () => {
             <form action="" className="" onSubmit={handleSubmit}>
               <div>
                 <textarea
-                  class="form-control p-4"
+                  className="form-control p-4"
                   id="exampleFormControlTextarea1"
                   rows="3"
                   placeholder="Answer"
@@ -166,7 +150,7 @@ const Answer = () => {
                   className="btn btn-primary fw-bold px-5 action_btn"
                   type="Submit"
                 >
-                  Post your Answer
+                  Post Your Answer
                 </button>
               </div>
             </form>
