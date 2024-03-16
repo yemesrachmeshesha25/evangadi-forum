@@ -5,7 +5,7 @@ import Header from '../../pages/Header/Header';
 import axios from '../../API/axiosConfig'
 import { v4 as uuidv4 } from "uuid";
 import { AppState } from "../../App";
-
+import Footer from "../../pages/Footer/Footer";
 const AskQuestion = () => {
   const navigate = useNavigate();
   const { user } = useContext(AppState);
@@ -132,6 +132,7 @@ const AskQuestion = () => {
           </form>
         </div>
       </div>
+      <Footer />
     </section>
   );
 };

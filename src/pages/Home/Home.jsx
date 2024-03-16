@@ -6,6 +6,7 @@ import { useNavigate , Link } from "react-router-dom";
 import { PiUserCircleDuotone } from "react-icons/pi";
 import { FaAngleRight } from "react-icons/fa6";
 import "../../index.css";
+import Footer from "../Footer/Footer";
 
 const Home = () => {
   const { user, question } = useContext(AppState);
@@ -13,10 +14,8 @@ const Home = () => {
   console.log(user);
 
   const navigate = useNavigate();
-  // const handleAnswerClick = () => {
-  //   navigate("/answers"); // Navigates to the "/answer" route
-  // };
 
+  // Function to handle clicking on the "Ask Question" button
   const handleAskQuestionClick = () => {
     navigate("/questions"); 
   };
@@ -26,60 +25,64 @@ const Home = () => {
       <Header />
       <section className=" bg-body-tertiary">
         <div className="d-flex justify-content-around pt-5  ">
+          {/* Ask Question button */}
           <a
             href="#"
             onClick={handleAskQuestionClick}
             className="btn btn-primary action_btn px-5"
           >
-           
             Ask Question
           </a>
+          {/* Display username if user object is not null */}
+          {user && (
             <p className="fw-semibold">
-            <span className="text-warning">Welcome:  </span>{user.username}
-          </p>
+              <span className="text-warning">Welcome:  </span>{user.username}
+            </p>
+          )}
         </div>
 
         <div className="container mt-5">
           <h2>Question</h2>
 
-          {question.questions &&
+          {question.questions && (
             question.questions.map((item, index) => (
               <Link
-              className="text-decoration-none text-black"
-              key={index}
-              to={`/answer?question=${encodeURIComponent(item.question)}&questiondescription=${encodeURIComponent(item.questiondescription)}&questionid=${encodeURIComponent(item.questionid)}`}
-            >
-              <hr />
-              <div className="d-flex justify-content-between align-items-center ">
-              <div className="d-md-flex align-items-center gap-4">
-                <div className="d-flex flex-column align-items-center gap-3">
-                  {/* user */}
-                  <div>
-                    <PiUserCircleDuotone size={90}/>
+                className="text-decoration-none text-black"
+                key={index}
+                to={`/answer?question=${encodeURIComponent(item.question)}&questiondescription=${encodeURIComponent(item.questiondescription)}&questionid=${encodeURIComponent(item.questionid)}`}
+              >
+                <hr />
+                <div className="d-flex justify-content-between align-items-center ">
+                  <div className="d-md-flex align-items-center gap-4">
+                    <div className="d-flex flex-column align-items-center gap-3">
+                      {/* user */}
+                      <div>
+                        <PiUserCircleDuotone size={90}/>
+                      </div>
+                      <div>{item.username}</div>
+                    </div>
+                    <div>
+                      {/* question */}
+                      <p>{item.question}</p>
+                    </div>
                   </div>
-                  <div>{item.username}</div>
+                  <div>
+                    {/* arrow */}
+                    <FaAngleRight />
+                  </div>
                 </div>
-                <div>
-                  {/* question */}
-                  <p>{item.question}</p>
-                </div>
-                </div>
-                <div>
-                  {/* arrow */}
-                  <FaAngleRight />
-                </div>
-              </div>
-            </Link>
-            ))}
+              </Link>
+            ))
+          )}
         </div>
-        
+        <Footer />
       </section>
-
     </>
   );
 };
 
 export default Home;
+
 
 
 

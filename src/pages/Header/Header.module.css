@@ -1,5 +1,5 @@
 /* header__wrapper */
-.header__wrapper {
+/* .header__wrapper {
     display: flex;
     justify-content: center;
     margin: 0 auto;
@@ -60,12 +60,12 @@
     .header_wrapper_logo {
         margin-right: 5%;
     }
-}
+} */
 /* Media queries for small screens (max-width: 768px) */
 
-@media only screen and (max-width: 768px) {
+/* @media only screen and (max-width: 768px) { */
     /* header_css */
-    .header__wrapper {
+    /* .header__wrapper {
         padding: 10px;
         display: flex;
         justify-content: space-between;
@@ -89,9 +89,9 @@
     .header_signin_wrapper button {
         width: 100%;
         margin-top: 10px;
-    }
+    } */
     /*CSS for dropdow */
-    .dropdown_content {
+    /* .dropdown_content {
         flex-grow: 1;
         overflow: auto;
     }
@@ -123,4 +123,4 @@
         border: 2px solid rgb(254,131,3);
     }
     .dropdown_content a:hover {color: rgb(254,131,3)};
-}
+} */
