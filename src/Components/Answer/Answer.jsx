@@ -109,7 +109,7 @@ const Answer = () => {
                         <div>
                           <PiUserCircleDuotone />
                         </div>
-                        <div>{user.username}</div>
+                        <div>{item.username}</div>
                       </div>
                       <div>
                         <p>{item.answer}</p>
