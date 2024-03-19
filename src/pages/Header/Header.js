@@ -18,7 +18,10 @@ const Header = () => {
     };
 return (
     <section className='sticky-top custom-sticky'>
-        <nav className="navbar p-3 navbar-expand-lg">
+        <nav
+        className="navbar p-3 navbar-expand-lg"
+        style={{ backgroundColor: "white" }}
+      >
         <div className="container">
             <a className="navbar-brand" href="#"><img src={logo} alt="EvangadiLogo" /></a>
   
