@@ -43,6 +43,7 @@ function Footer() {
                 <p>+1-202-386-2702</p>
             </div>
         </section>
+        <h3 className={classes.footer_yemesrach}> Developed By Yemesrach K. Meshesha </h3>
     </div>
   )
 }

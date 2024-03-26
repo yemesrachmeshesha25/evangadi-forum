@@ -70,6 +70,11 @@
 .footer_contact p {
     color:rgb(136,154,156);
 }
+.footer_yemesrach {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 @media only screen and (max-width: 768px){
     /* footer */
