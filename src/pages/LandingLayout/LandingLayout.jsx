@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Header from "../../pages/Header/Header";
+import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import bg from "../../assets/bg.jpg";
-import Login from "../../pages/Login/Login";
+import Login from "../Login/Login";
 import SignUp from "../../Components/SignUp/SignUp";
 
 const LandingLayout = () => {
